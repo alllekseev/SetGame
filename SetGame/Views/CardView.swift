@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct CardView: View {
-  let base = RoundedRectangle(cornerRadius: 25, style: .circular)
-  let shape = ShapeView(shape: Capsule(), color: .cyan)
-  let shapesAmount = 2
+   let base = RoundedRectangle(cornerRadius: 25, style: .circular)
+   let cardContent: SetGame.Card
+
+  init(cardContent: SetGame.Card) {
+    self.cardContent = cardContent
+  }
+
 
   var body: some View {
     ZStack {
@@ -19,9 +23,10 @@ struct CardView: View {
         .strokeBorder(lineWidth: 3)
       // TODO: use here theme color
         .foregroundStyle(.green)
+        .scaleEffect(cardContent.highlighted ? 0.4 : 1)
       VStack(spacing: 0) {
-        ForEach(1...shapesAmount, id: \.self) { _ in
-          shape
+        ForEach(1...cardContent.itemsCount.rawValue, id: \.self) { _ in
+          ShapeView(shapeConfigure: cardContent.shapeView)
         }
       }
     }
@@ -29,5 +34,14 @@ struct CardView: View {
 }
 
 #Preview {
-  CardView()
+  CardView(
+    cardContent: SetGame.Card(
+      shapeView: .init(
+        shape: .diamond,
+        color: .red,
+        shading: .stroke
+      ),
+      itemsCount: .two
+    )
+  )
 }

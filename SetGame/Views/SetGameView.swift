@@ -8,17 +8,22 @@
 import SwiftUI
 
 struct SetGameView: View {
+  @ObservedObject var game: SetGameViewModel
+
   var body: some View {
     VStack {
       header
         .padding(.bottom, 20)
       ScrollView {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 95), spacing: 0)], spacing: 0) {
-          ForEach((1...3), id: \.self) { _ in
-            CardView()
-              .padding(4)
+          ForEach(Array(zip(game.cards.indices, game.cards)), id: \.0) { (index, card) in
+            CardView(cardContent: card)
               .aspectRatio(2/3, contentMode: .fit)
+              .onTapGesture {
+                game.choose(card, withIndex: index)
+              }
           }
+          .padding(4)
         }
       }
       Spacer()
@@ -32,13 +37,9 @@ struct SetGameView: View {
       Text("Set Game")
         .font(.title)
       Spacer()
-      HStack {
-        Text("Finded Sets:")
-          .font(.title2)
-        Text("15")
-          .font(.title)
-          .fontWeight(.bold)
-      }
+      Text("15")
+        .font(.title)
+        .fontWeight(.bold)
     }
   }
 
@@ -61,6 +62,6 @@ struct SetGameView: View {
   }
 }
 
-#Preview {
-  SetGameView()
-}
+//#Preview {
+//  SetGameView(game: SetGameViewModel())
+//}
