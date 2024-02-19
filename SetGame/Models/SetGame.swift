@@ -64,6 +64,20 @@ struct SetGame {
       cardsInSet.append(card)
       if cardsInSet.count == 3 {
         score = checkSet() ? score + 1 : score
+//        for card in cardsInSet {
+//          if let index = openedCards.firstIndex(where: { $0.id == card.id }) {
+//            if checkSet() {
+//              if openedCards.count < 12 {
+//                openedCards[index] = getCards(1)[0]
+//              } else {
+//                openedCards.remove(at: index)
+//              }
+//              cards.removeLast()
+//            } else {
+//              openedCards[index].highlighted.toggle()
+//            }
+//          }
+//        }
         cardsInSet.removeAll()
       }
       return
@@ -75,14 +89,41 @@ struct SetGame {
   }
 
   private mutating func checkSet() -> Bool {
+    var result = false
+
     defer {
       for card in cardsInSet {
         if let index = openedCards.firstIndex(where: { $0.id == card.id }) {
-          openedCards[index].highlighted.toggle()
+          if result {
+            if openedCards.count > 12 {
+              openedCards.remove(at: index)
+            }
+            cards.removeLast()
+          } else {
+            openedCards[index].highlighted.toggle()
+          }
         }
       }
     }
-    return (cards[0] == cards[1] && cards[1] == cards[2] && cards[2] == cards[0]) || (cards[0] != cards[1] && cards[1] != cards[2] && cards[2] != cards[0])
+    var shape = Set<Shape>()
+    var color = Set<Color>()
+    var shading = Set<Shading>()
+    var number = Set<ItemsCount>()
+
+    for card in cardsInSet {
+      shape.insert(card.shapeView.shape)
+      color.insert(card.shapeView.color)
+      shading.insert(card.shapeView.shading)
+      number.insert(card.itemsCount)
+    }
+
+    if shape.count == 2 || color.count == 2 || shading.count == 2 || number.count == 2 {
+      result = false
+      return result
+    }
+    result = true
+
+    return result
   }
 
   private func getCards(_ amount: Int) -> [Card] {
@@ -102,16 +143,6 @@ struct SetGame {
       let shape: Shape
       let color: Color
       let shading: Shading
-    }
-
-    static func == (lhs: Card, rhs: Card) -> Bool {
-      var res: Bool
-      let shape = lhs.shapeView.shape == rhs.shapeView.shape || lhs.shapeView.shape != rhs.shapeView.shape
-      let color = lhs.shapeView.color == rhs.shapeView.color || lhs.shapeView.color != rhs.shapeView.color
-      let shading = lhs.shapeView.shading == rhs.shapeView.shading || lhs.shapeView.shading != rhs.shapeView.shading
-      let number = lhs.itemsCount == rhs.itemsCount && lhs.itemsCount != rhs.itemsCount
-      res = shape && color && shading || shape && color && number || shape && shading && number || color && shading && number
-      return res
     }
   }
 }
