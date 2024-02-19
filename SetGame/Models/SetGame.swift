@@ -54,12 +54,31 @@ struct SetGame {
     cards.removeLast(3)
   }
 
+  private var cardsInSet = [Card]()
   mutating func choose(_ card: Card, withIndex index: Int) {
-    
+    if !card.highlighted && !cardsInSet.contains(card) {
+      openedCards[index].highlighted.toggle()
+      cardsInSet.append(card)
+      if cardsInSet.count == 3 {
+        score = checkSet() ? score + 1 : score
+        cardsInSet.removeAll()
+      }
+    } else {
+      openedCards[index].highlighted.toggle()
+      if let currentIndex = cardsInSet.firstIndex(of: card) {
+        cardsInSet.remove(at: currentIndex)
+      }
+    }
   }
 
-  private mutating func createSet() {
+  private mutating func checkSet() -> Bool {
+    var res = false
+    for card in cardsInSet {
 
+    }
+
+    
+    return res
   }
 
   private func getCards(_ amount: Int) -> [Card] {

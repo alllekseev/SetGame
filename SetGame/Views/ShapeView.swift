@@ -38,7 +38,9 @@ struct ShapeView: View {
       .stroke(
         shapeColor,
         style: StrokeStyle(
-          lineWidth: 6
+          lineWidth: 6,
+          lineCap: .round,
+          lineJoin: .round
         )
       )
       .fill(shapeColor.opacity(shapeShading))
@@ -67,7 +69,7 @@ extension ShapeView {
 #Preview {
   ShapeView(
     shapeConfigure: SetGame.Card.ShapeView(
-      shape: .capsule,
+      shape: .diamond,
       color: .blue,
       shading: .streak
     )

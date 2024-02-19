@@ -46,7 +46,7 @@ struct SetGameView: View {
   private var bottom: some View {
     VStack(spacing: 20) {
       Button("Deal New Cards") {
-
+        game.addCards()
       }
       .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
       .font(.title2)
@@ -62,6 +62,6 @@ struct SetGameView: View {
   }
 }
 
-//#Preview {
-//  SetGameView(game: SetGameViewModel())
-//}
+#Preview {
+  SetGameView(game: SetGameViewModel())
+}
