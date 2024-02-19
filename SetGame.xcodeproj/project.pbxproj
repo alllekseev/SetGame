@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2A013BF42B7E8E4D00D653D7 /* SetTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A013BF32B7E8E4D00D653D7 /* SetTheme.swift */; };
+		2A21302F2B83953E00495883 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A21302E2B83953E00495883 /* AspectVGrid.swift */; };
+		2A2130312B83A3FA00495883 /* CustomButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2130302B83A3FA00495883 /* CustomButtonStyle.swift */; };
 		2A5044A72B7E48C3005266C4 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5044A62B7E48C3005266C4 /* CardView.swift */; };
 		2A5044A92B7E4AFD005266C4 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5044A82B7E4AFD005266C4 /* ShapeView.swift */; };
 		2A7A54402B7CC3160055D171 /* SetGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A543F2B7CC3160055D171 /* SetGameApp.swift */; };
@@ -22,6 +24,8 @@
 
 /* Begin PBXFileReference section */
 		2A013BF32B7E8E4D00D653D7 /* SetTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetTheme.swift; sourceTree = "<group>"; };
+		2A21302E2B83953E00495883 /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		2A2130302B83A3FA00495883 /* CustomButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyle.swift; sourceTree = "<group>"; };
 		2A5044A62B7E48C3005266C4 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		2A5044A82B7E4AFD005266C4 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
 		2A7A543C2B7CC3160055D171 /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				2A7A544D2B7CD3F40055D171 /* Diamond.swift */,
+				2A21302E2B83953E00495883 /* AspectVGrid.swift */,
+				2A2130302B83A3FA00495883 /* CustomButtonStyle.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -196,8 +202,10 @@
 				2A91A9B82B7EB147007B355D /* SetGameViewModel.swift in Sources */,
 				2A7A54422B7CC3160055D171 /* SetGameView.swift in Sources */,
 				2A7A54402B7CC3160055D171 /* SetGameApp.swift in Sources */,
+				2A2130312B83A3FA00495883 /* CustomButtonStyle.swift in Sources */,
 				2ACBD1D62B7F858000AA500D /* Resources.swift in Sources */,
 				2A7A54502B7CE7A20055D171 /* SetGame.swift in Sources */,
+				2A21302F2B83953E00495883 /* AspectVGrid.swift in Sources */,
 				2A5044A72B7E48C3005266C4 /* CardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

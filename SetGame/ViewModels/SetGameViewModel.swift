@@ -10,9 +10,12 @@ import SwiftUI
 class SetGameViewModel: ObservableObject {
   
   @Published private var game: SetGame
+  var cardCounter: Int
 
   init() {
+    cardCounter = 0
     game = SetGame()
+    cardCounter = 81 - game.openedCards.count
   }
 
   var cards: [SetGame.Card] {
@@ -27,9 +30,16 @@ class SetGameViewModel: ObservableObject {
 
   func addCards() {
     game.addCards()
+    cardCounter -= 3
   }
 
-  func choose(_ card: SetGame.Card, withIndex index: Int) {
-    game.choose(card, withIndex: index)
+  func choose(_ card: SetGame.Card) {
+    game.choose(card)
+  }
+
+  func createNewGame() {
+    cardCounter = 0
+    game = SetGame()
+    cardCounter = 81 - game.openedCards.count
   }
 }

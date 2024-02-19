@@ -9,23 +9,18 @@ import SwiftUI
 
 struct SetGameView: View {
   @ObservedObject var game: SetGameViewModel
+  @Environment (\.isEnabled) private var isEnabled: Bool
+
+  let configureation = ButtonStyleConfiguration.self
+
+  private let cardsAspectRatio: CGFloat = 2/3
 
   var body: some View {
     VStack {
       header
         .padding(.bottom, 20)
-      ScrollView {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 95), spacing: 0)], spacing: 0) {
-          ForEach(Array(zip(game.cards.indices, game.cards)), id: \.0) { (index, card) in
-            CardView(cardContent: card)
-              .aspectRatio(2/3, contentMode: .fit)
-              .onTapGesture {
-                game.choose(card, withIndex: index)
-              }
-          }
-          .padding(4)
-        }
-      }
+      cards
+        .animation(.default, value: game.cards)
       Spacer()
       bottom
     }
@@ -37,9 +32,19 @@ struct SetGameView: View {
       Text("Set Game")
         .font(.title)
       Spacer()
-      Text("15")
+      Text("\(game.score)")
         .font(.title)
         .fontWeight(.bold)
+    }
+  }
+
+  private var cards: some View {
+    AspectVGrid(game.cards, aspectRatio: cardsAspectRatio) { card in
+      CardView(cardContent: card)
+        .padding(4)
+        .onTapGesture {
+          game.choose(card)
+        }
     }
   }
 
@@ -48,18 +53,18 @@ struct SetGameView: View {
       Button("Deal New Cards") {
         game.addCards()
       }
-      .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-      .font(.title2)
-      .background(.indigo)
-      .foregroundStyle(.white)
       .clipShape(Capsule())
+      .disabled(game.cardCounter == 0)
+      .buttonStyle(CustomButtonStyle(foreground: .white, background: .indigo))
       Button("New Game") {
-
+        game.createNewGame()
       }
       .font(.title3)
     }
     .fontWeight(.medium)
   }
+
+
 }
 
 #Preview {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CardView: View {
-   let base = RoundedRectangle(cornerRadius: 25, style: .circular)
+   let base = RoundedRectangle(cornerRadius: 16, style: .circular)
    let cardContent: SetGame.Card
 
   init(cardContent: SetGame.Card) {
@@ -23,13 +23,14 @@ struct CardView: View {
         .strokeBorder(lineWidth: 3)
       // TODO: use here theme color
         .foregroundStyle(.green)
-        .scaleEffect(cardContent.highlighted ? 0.4 : 1)
       VStack(spacing: 0) {
         ForEach(1...cardContent.itemsCount.rawValue, id: \.self) { _ in
           ShapeView(shapeConfigure: cardContent.shapeView)
         }
       }
+      .padding(4)
     }
+    .scaleEffect(cardContent.highlighted ? 0.9 : 1)
   }
 }
 

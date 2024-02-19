@@ -55,30 +55,34 @@ struct SetGame {
   }
 
   private var cardsInSet = [Card]()
-  mutating func choose(_ card: Card, withIndex index: Int) {
-    if !card.highlighted && !cardsInSet.contains(card) {
-      openedCards[index].highlighted.toggle()
+  mutating func choose(_ card: Card) {
+    guard let index = openedCards.firstIndex(where: { $0.id == card.id }) else {
+      return
+    }
+    openedCards[index].highlighted.toggle()
+    if !cardsInSet.contains(where: { $0.id == card.id }) {
       cardsInSet.append(card)
       if cardsInSet.count == 3 {
         score = checkSet() ? score + 1 : score
         cardsInSet.removeAll()
       }
+      return
     } else {
-      openedCards[index].highlighted.toggle()
-      if let currentIndex = cardsInSet.firstIndex(of: card) {
+      if let currentIndex = cardsInSet.firstIndex(where: { $0.id == card.id }) {
         cardsInSet.remove(at: currentIndex)
       }
     }
   }
 
   private mutating func checkSet() -> Bool {
-    var res = false
-    for card in cardsInSet {
-
+    defer {
+      for card in cardsInSet {
+        if let index = openedCards.firstIndex(where: { $0.id == card.id }) {
+          openedCards[index].highlighted.toggle()
+        }
+      }
     }
-
-    
-    return res
+    return (cards[0] == cards[1] && cards[1] == cards[2] && cards[2] == cards[0]) || (cards[0] != cards[1] && cards[1] != cards[2] && cards[2] != cards[0])
   }
 
   private func getCards(_ amount: Int) -> [Card] {
@@ -98,6 +102,16 @@ struct SetGame {
       let shape: Shape
       let color: Color
       let shading: Shading
+    }
+
+    static func == (lhs: Card, rhs: Card) -> Bool {
+      var res: Bool
+      let shape = lhs.shapeView.shape == rhs.shapeView.shape || lhs.shapeView.shape != rhs.shapeView.shape
+      let color = lhs.shapeView.color == rhs.shapeView.color || lhs.shapeView.color != rhs.shapeView.color
+      let shading = lhs.shapeView.shading == rhs.shapeView.shading || lhs.shapeView.shading != rhs.shapeView.shading
+      let number = lhs.itemsCount == rhs.itemsCount && lhs.itemsCount != rhs.itemsCount
+      res = shape && color && shading || shape && color && number || shape && shading && number || color && shading && number
+      return res
     }
   }
 }
