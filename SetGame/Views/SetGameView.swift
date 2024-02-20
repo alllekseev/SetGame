@@ -14,12 +14,14 @@ struct SetGameView: View {
   let configureation = ButtonStyleConfiguration.self
 
   private let cardsAspectRatio: CGFloat = 2/3
+  private let spacing: CGFloat = 4
 
   var body: some View {
     VStack {
       header
         .padding(.bottom, 20)
       cards
+        .foregroundStyle(.green)
         .animation(.default, value: game.cards)
       Spacer()
       bottom
@@ -40,8 +42,8 @@ struct SetGameView: View {
 
   private var cards: some View {
     AspectVGrid(game.cards, aspectRatio: cardsAspectRatio) { card in
-      CardView(cardContent: card)
-        .padding(4)
+      CardView(card)
+        .padding(spacing)
         .onTapGesture {
           game.choose(card)
         }

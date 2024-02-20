@@ -8,35 +8,44 @@
 import SwiftUI
 
 struct CardView: View {
-   let base = RoundedRectangle(cornerRadius: 16, style: .circular)
    let cardContent: SetGame.Card
 
-  init(cardContent: SetGame.Card) {
+  init(_ cardContent: SetGame.Card) {
     self.cardContent = cardContent
   }
 
-
   var body: some View {
     ZStack {
-      base
-        .fill(.white)
-        .strokeBorder(lineWidth: 3)
-      // TODO: use here theme color
-        .foregroundStyle(.green)
-      VStack(spacing: 0) {
-        ForEach(1...cardContent.itemsCount.rawValue, id: \.self) { _ in
-          ShapeView(shapeConfigure: cardContent.shapeView)
-        }
+      let base = RoundedRectangle(cornerRadius: Constants.cornerRadius)
+      Group {
+        base.strokeBorder(lineWidth: Constants.lineWidth)
+          .background(base.fill(.white))
+        VStack {
+          ForEach(1...cardContent.itemsCount.rawValue, id: \.self) { _ in
+            ShapeView(shapeConfigure: cardContent.shapeView)
+          }
+        }.padding(Constants.inset)
       }
-      .padding(4)
     }
-    .scaleEffect(cardContent.highlighted ? 0.9 : 1)
+    .scaleEffect(cardContent.highlighted ? Constants.ScaleEffect.smallest : Constants.ScaleEffect.largest)
+  }
+
+  private struct Constants {
+    static let cornerRadius: CGFloat = 12
+    static let inset: CGFloat = 6
+    static let lineWidth: CGFloat = 2
+    static let vStackInset: CGFloat = 0
+
+    struct ScaleEffect {
+      static let largest: CGFloat = 1
+      static let smallest: CGFloat = 0.9
+    }
   }
 }
 
 #Preview {
   CardView(
-    cardContent: SetGame.Card(
+    SetGame.Card(
       shapeView: .init(
         shape: .diamond,
         color: .red,

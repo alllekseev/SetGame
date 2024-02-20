@@ -38,14 +38,21 @@ struct ShapeView: View {
       .stroke(
         shapeColor,
         style: StrokeStyle(
-          lineWidth: 6,
+          lineWidth: Constants.lineWidth,
           lineCap: .round,
           lineJoin: .round
         )
       )
       .fill(shapeColor.opacity(shapeShading))
-      .scaleEffect(0.6)
-      .aspectRatio(2/1, contentMode: .fit)
+      .scaleEffect(Constants.scaleEffect)
+      .aspectRatio(Constants.aspectRatio, contentMode: .fit)
+  }
+
+  private struct Constants {
+    static let scaleEffect: CGFloat = 0.6
+    static let aspectRatio: CGFloat = 2/1
+    static let lineWidth: CGFloat = 2
+
   }
 }
 
