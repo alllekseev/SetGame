@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SetGameView: View {
   @ObservedObject var game: SetGameViewModel
-  @Environment (\.isEnabled) private var isEnabled: Bool
 
   let configureation = ButtonStyleConfiguration.self
 

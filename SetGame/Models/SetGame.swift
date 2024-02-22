@@ -9,9 +9,11 @@ import Foundation
 
 struct SetGame {
 
-  private var deck: [Card]
+  private(set) var deck: [Card]
   private(set) var cards: [Card]
   private(set) var score: Int
+
+  private var cardsAmountInDeck: Int = 9
 
   init() {
     deck = []
@@ -20,9 +22,8 @@ struct SetGame {
     createCards { cards in
       self.deck = cards
     }
-    deck.shuffle()
-    cards = getCards(12)
-    deck.removeLast(12)
+//    deck.shuffle()
+    cards = getCards(cardsAmountInDeck)
   }
 
   private func createCards(complition: ([Card]) -> Void) {
@@ -45,16 +46,18 @@ struct SetGame {
         }
       }
     }
-    complition(cards)
+    let testCards = Array(cards[0...11])
+//    complition(cards)
+    complition(testCards)
     cards.removeAll()
   }
 
   mutating func addCards(){
     cards.append(contentsOf: getCards(3))
-    deck.removeLast(3)
   }
 
   private var cardsInSet = [Card]()
+
   mutating func choose(_ card: Card) {
     guard let index = cards.firstIndex(where: { $0.id == card.id }) else {
       return
@@ -72,13 +75,12 @@ struct SetGame {
 //              } else {
 //                openedCards.remove(at: index)
 //              }
-//              cards.removeLast()
 //            } else {
 //              openedCards[index].highlighted.toggle()
 //            }
 //          }
 //        }
-        cardsInSet.removeAll()
+//        cardsInSet.removeAll()
       }
       return
     } else {
@@ -95,16 +97,23 @@ struct SetGame {
       for card in cardsInSet {
         if let index = cards.firstIndex(where: { $0.id == card.id }) {
           if result {
-            if cards.count > 12 {
+            if cards.count > cardsAmountInDeck {
               cards.remove(at: index)
+            } else {
+              if let card = getCards(1).first {
+                cards[index] = card
+              } else {
+                cards.remove(at: index)
+              }
             }
-            deck.removeLast()
           } else {
             cards[index].highlighted.toggle()
           }
         }
       }
+      cardsInSet.removeAll()
     }
+
     var shape = Set<Shape>()
     var color = Set<Color>()
     var shading = Set<Shading>()
@@ -118,7 +127,6 @@ struct SetGame {
     }
 
     if shape.count == 2 || color.count == 2 || shading.count == 2 || number.count == 2 {
-      result = false
       return result
     }
     result = true
@@ -126,8 +134,13 @@ struct SetGame {
     return result
   }
 
-  private func getCards(_ amount: Int) -> [Card] {
+  // FIXME: Fix the case when all the cards in the deck are used up
+  private mutating func getCards(_ amount: Int) -> [Card] {
+    guard deck.count >= amount else {
+      return []
+    }
     let suffix = deck.suffix(from: deck.endIndex - amount)
+    deck.removeLast(amount)
     return Array(suffix)
   }
 
