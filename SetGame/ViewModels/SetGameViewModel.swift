@@ -15,11 +15,11 @@ class SetGameViewModel: ObservableObject {
   init() {
     cardCounter = 0
     game = SetGame()
-    cardCounter = 81 - game.openedCards.count
+    cardCounter = 81 - game.cards.count
   }
 
   var cards: [SetGame.Card] {
-    return game.openedCards
+    return game.cards
   }
 
   var score: Int {
@@ -40,6 +40,6 @@ class SetGameViewModel: ObservableObject {
   func createNewGame() {
     cardCounter = 0
     game = SetGame()
-    cardCounter = 81 - game.openedCards.count
+    cardCounter = 81 - game.cards.count
   }
 }

@@ -9,20 +9,20 @@ import Foundation
 
 struct SetGame {
 
-  private var cards: [Card]
-  private(set) var openedCards: [Card]
+  private var deck: [Card]
+  private(set) var cards: [Card]
   private(set) var score: Int
 
   init() {
+    deck = []
     cards = []
-    openedCards = []
     score = 0
     createCards { cards in
-      self.cards = cards
+      self.deck = cards
     }
-    cards.shuffle()
-    openedCards = getCards(12)
-    cards.removeLast(12)
+    deck.shuffle()
+    cards = getCards(12)
+    deck.removeLast(12)
   }
 
   private func createCards(complition: ([Card]) -> Void) {
@@ -50,16 +50,16 @@ struct SetGame {
   }
 
   mutating func addCards(){
-    openedCards.append(contentsOf: getCards(3))
-    cards.removeLast(3)
+    cards.append(contentsOf: getCards(3))
+    deck.removeLast(3)
   }
 
   private var cardsInSet = [Card]()
   mutating func choose(_ card: Card) {
-    guard let index = openedCards.firstIndex(where: { $0.id == card.id }) else {
+    guard let index = cards.firstIndex(where: { $0.id == card.id }) else {
       return
     }
-    openedCards[index].highlighted.toggle()
+    cards[index].highlighted.toggle()
     if !cardsInSet.contains(where: { $0.id == card.id }) {
       cardsInSet.append(card)
       if cardsInSet.count == 3 {
@@ -93,14 +93,14 @@ struct SetGame {
 
     defer {
       for card in cardsInSet {
-        if let index = openedCards.firstIndex(where: { $0.id == card.id }) {
+        if let index = cards.firstIndex(where: { $0.id == card.id }) {
           if result {
-            if openedCards.count > 12 {
-              openedCards.remove(at: index)
+            if cards.count > 12 {
+              cards.remove(at: index)
             }
-            cards.removeLast()
+            deck.removeLast()
           } else {
-            openedCards[index].highlighted.toggle()
+            cards[index].highlighted.toggle()
           }
         }
       }
@@ -127,7 +127,7 @@ struct SetGame {
   }
 
   private func getCards(_ amount: Int) -> [Card] {
-    let suffix = cards.suffix(from: cards.endIndex - amount)
+    let suffix = deck.suffix(from: deck.endIndex - amount)
     return Array(suffix)
   }
 
