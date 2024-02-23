@@ -30,12 +30,12 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
             size: geometry.size,
             atAspectRation: aspectRatio
         )
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)], spacing: 0) {
+      LazyVGrid(columns: [GridItem(.adaptive(minimum: items.count >= 18 ? 80 : gridItemSize), spacing: 0)], spacing: 0) {
             ForEach(items) { item in
                 content(item)
-                    .aspectRatio(aspectRatio, contentMode: .fit)
+                    .aspectRatio(aspectRatio, contentMode: .fill)
             }
-        }
+        }.wrappedInScrollView(when: items.count >= 18)
     }
   }
 

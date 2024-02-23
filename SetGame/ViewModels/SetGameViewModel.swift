@@ -11,8 +11,8 @@ class SetGameViewModel: ObservableObject {
   
   @Published private var game: SetGame
   
-  var cardCounter: Int {
-    game.deck.count - game.cards.count
+  var leftCardsInDeck: Bool {
+    game.deck.count <= 0
   }
 
   init() {

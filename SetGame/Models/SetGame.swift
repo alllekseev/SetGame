@@ -13,7 +13,7 @@ struct SetGame {
   private(set) var cards: [Card]
   private(set) var score: Int
 
-  private var cardsAmountInDeck: Int = 9
+  private var cardsAmountInDeck: Int = 12
 
   init() {
     deck = []
@@ -28,6 +28,7 @@ struct SetGame {
 
   private func createCards(complition: ([Card]) -> Void) {
     var cards = [Card]()
+
     for shape in Shape.allCases {
       for color in Color.allCases {
         for shading in Shading.allCases {
@@ -46,48 +47,11 @@ struct SetGame {
         }
       }
     }
+
     let testCards = Array(cards[0...11])
-//    complition(cards)
-    complition(testCards)
+    complition(cards)
+//    complition(testCards)
     cards.removeAll()
-  }
-
-  mutating func addCards(){
-    cards.append(contentsOf: getCards(3))
-  }
-
-  private var cardsInSet = [Card]()
-
-  mutating func choose(_ card: Card) {
-    guard let index = cards.firstIndex(where: { $0.id == card.id }) else {
-      return
-    }
-    cards[index].highlighted.toggle()
-    if !cardsInSet.contains(where: { $0.id == card.id }) {
-      cardsInSet.append(card)
-      if cardsInSet.count == 3 {
-        score = checkSet() ? score + 1 : score
-//        for card in cardsInSet {
-//          if let index = openedCards.firstIndex(where: { $0.id == card.id }) {
-//            if checkSet() {
-//              if openedCards.count < 12 {
-//                openedCards[index] = getCards(1)[0]
-//              } else {
-//                openedCards.remove(at: index)
-//              }
-//            } else {
-//              openedCards[index].highlighted.toggle()
-//            }
-//          }
-//        }
-//        cardsInSet.removeAll()
-      }
-      return
-    } else {
-      if let currentIndex = cardsInSet.firstIndex(where: { $0.id == card.id }) {
-        cardsInSet.remove(at: currentIndex)
-      }
-    }
   }
 
   private mutating func checkSet() -> Bool {
@@ -134,7 +98,6 @@ struct SetGame {
     return result
   }
 
-  // FIXME: Fix the case when all the cards in the deck are used up
   private mutating func getCards(_ amount: Int) -> [Card] {
     guard deck.count >= amount else {
       return []
@@ -142,6 +105,34 @@ struct SetGame {
     let suffix = deck.suffix(from: deck.endIndex - amount)
     deck.removeLast(amount)
     return Array(suffix)
+  }
+
+  // MARK: - Intents
+
+  mutating func addCards(){
+    cards.append(contentsOf: getCards(3))
+  }
+
+  private var cardsInSet = [Card]()
+
+  mutating func choose(_ card: Card) {
+    guard let index = cards.firstIndex(where: { $0.id == card.id }) else {
+      return
+    }
+
+    cards[index].highlighted.toggle()
+    
+    if !cardsInSet.contains(where: { $0.id == card.id }) {
+      cardsInSet.append(card)
+      if cardsInSet.count == 3 {
+        score = checkSet() ? score + 1 : score
+      }
+      return
+    } else {
+      if let currentIndex = cardsInSet.firstIndex(where: { $0.id == card.id }) {
+        cardsInSet.remove(at: currentIndex)
+      }
+    }
   }
 
   struct Card: Hashable, Identifiable {

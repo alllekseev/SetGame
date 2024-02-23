@@ -25,7 +25,8 @@ struct SetGameView: View {
       Spacer()
       bottom
     }
-    .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+    .padding(.horizontal, 16)
+    .padding(.vertical, 8)
   }
 
   private var header: some View {
@@ -55,7 +56,7 @@ struct SetGameView: View {
         game.addCards()
       }
       .clipShape(Capsule())
-      .disabled(game.cardCounter == 0)
+      .disabled(game.leftCardsInDeck)
       .buttonStyle(CustomButtonStyle(foreground: .white, background: .indigo))
       Button("New Game") {
         game.createNewGame()
@@ -65,7 +66,19 @@ struct SetGameView: View {
     .fontWeight(.medium)
   }
 
+}
 
+extension View {
+  @ViewBuilder
+  func wrappedInScrollView(when condition: Bool) -> some View {
+    if condition {
+      ScrollView {
+        self
+      }
+    } else {
+      self
+    }
+  }
 }
 
 #Preview {
