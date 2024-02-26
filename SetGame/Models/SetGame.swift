@@ -22,7 +22,6 @@ struct SetGame {
     createCards { cards in
       self.deck = cards
     }
-//    deck.shuffle()
     cards = getCards(cardsAmountInDeck)
   }
 
@@ -48,9 +47,13 @@ struct SetGame {
       }
     }
 
-    let testCards = Array(cards[0...11])
+    #if DEBUG
+      cards = Array(cards[0...11])
+    #else
+      cards.shuffle()
+    #endif
+
     complition(cards)
-//    complition(testCards)
     cards.removeAll()
   }
 
